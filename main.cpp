@@ -14,7 +14,7 @@ using namespace imageNameSpace;
  *    to run, type "make" -> "./mosaic"
  *
  *    Your edits go on lines:
- *        25, 31, 37, 44, and 48
+ *        28, 34, 40, 47, and 51
  */
 
 
@@ -22,7 +22,10 @@ using namespace imageNameSpace;
 // 0 = Image Blur Mosaic
 // 1 = Gradient Flip Mosaic
 // 2 = Basic Mosaic
-#define IMAGE_CONVERT 1 // EDIT HERE
+// 3 = Pointillism w/ White Background
+// 4 = Pointillism w/ Black Background
+// 5 = Scaled effect
+#define IMAGE_CONVERT 0 // EDIT HERE
 
 // EDIT HERE
 // 0 = Square Image
@@ -213,6 +216,118 @@ int main() {
           myfile << "        }\n";
           myfile << "    }\n";
           myfile << "    save(\"output3.png\");\n";
+          myfile << "}\n\n";
+          break;
+      case 3: // Pointillism w/ White Background
+          printf("Initializing 'Pointillism'\n");
+          myfile << "void draw() {\n";
+          myfile << "    noStroke();\n";
+          myfile << "    colorMode(HSB, 360, 1, 1);\n";
+          myfile << "    int tileResolution = " << tileCounter << ";\n";
+          myfile << "    int stepsW = " << stepsW << ";\n";
+          myfile << "    int stepsH = " << stepsH << ";\n";
+          myfile << "    // Initialize place holders\n";
+          myfile << "    float[] hue = hBackgroundTile(tileResolution);\n";
+          myfile << "    float[] saturation = sBackgroundTile(tileResolution);\n";
+          myfile << "    float[] luminance = lBackgroundTile(tileResolution);\n";
+          myfile << "    int[] coord = coordBackgroundTile(tileResolution);\n";
+          myfile << "    float diameter;\n";
+          myfile << "    if(coord[0] > coord[1]){\n";
+          myfile << "        diameter = coord[1] * 0.8;\n";
+          myfile << "    } else {\n";
+          myfile << "        diameter = coord[0] * 0.8;\n";
+          myfile << "    }\n";
+          printf("Making print statements\n");
+          myfile << "    // Sets background to white\n";
+          myfile << "    beginShape();\n";
+          myfile << "    fill(0, 0, 1);\n";
+          myfile << "    rect(0, 0, " << (stepWidth * stepsW) << ", " << (stepHeight * stepsH) << ");\n";
+          myfile << "    endShape();\n";
+          myfile << "    // Iterates through each tile\n";
+          myfile << "    for(int i = 0; i <= stepsH; i++){\n";
+          myfile << "        for(int j = 0; j <= stepsW; j++){\n";
+          myfile << "            beginShape();\n";
+          myfile << "            // color of circle\n";
+          myfile << "            fill(hue[i*(stepsW+1) + j], saturation[i*(stepsW+1) + j], luminance[i*(stepsW+1) + j]);\n";
+          myfile << "            // draw circle\n";
+          myfile << "            circle(coord[0]*j, coord[1]*i, diameter);\n";
+          myfile << "            endShape();\n";
+          myfile << "        }\n";
+          myfile << "    }\n";
+          myfile << "    save(\"output4.png\");\n";
+          myfile << "}\n\n";
+          break;
+      case 4: // Pointillism w/ Black Background
+          printf("Initializing 'Pointillism'\n");
+          myfile << "void draw() {\n";
+          myfile << "    noStroke();\n";
+          myfile << "    colorMode(HSB, 360, 1, 1);\n";
+          myfile << "    int tileResolution = " << tileCounter << ";\n";
+          myfile << "    int stepsW = " << stepsW << ";\n";
+          myfile << "    int stepsH = " << stepsH << ";\n";
+          myfile << "    // Initialize place holders\n";
+          myfile << "    float[] hue = hBackgroundTile(tileResolution);\n";
+          myfile << "    float[] saturation = sBackgroundTile(tileResolution);\n";
+          myfile << "    float[] luminance = lBackgroundTile(tileResolution);\n";
+          myfile << "    int[] coord = coordBackgroundTile(tileResolution);\n";
+          myfile << "    float diameter;\n";
+          myfile << "    if(coord[0] > coord[1]){\n";
+          myfile << "        diameter = coord[1] * 0.8;\n";
+          myfile << "    } else {\n";
+          myfile << "        diameter = coord[0] * 0.8;\n";
+          myfile << "    }\n";
+          printf("Making print statements\n");
+          myfile << "    // Sets background to white\n";
+          myfile << "    beginShape();\n";
+          myfile << "    fill(0, 0, 0);\n";
+          myfile << "    rect(0, 0, " << (stepWidth * stepsW) << ", " << (stepHeight * stepsH) << ");\n";
+          myfile << "    endShape();\n";
+          myfile << "    // Iterates through each tile\n";
+          myfile << "    for(int i = 0; i <= stepsH; i++){\n";
+          myfile << "        for(int j = 0; j <= stepsW; j++){\n";
+          myfile << "            beginShape();\n";
+          myfile << "            // color of circle\n";
+          myfile << "            fill(hue[i*(stepsW+1) + j], saturation[i*(stepsW+1) + j], luminance[i*(stepsW+1) + j]);\n";
+          myfile << "            // draw circle\n";
+          myfile << "            circle(coord[0]*j, coord[1]*i, diameter);\n";
+          myfile << "            endShape();\n";
+          myfile << "        }\n";
+          myfile << "    }\n";
+          myfile << "    save(\"output5.png\");\n";
+          myfile << "}\n\n";
+          break;
+      case 5: // Paint Stroke
+          printf("Initializing 'Pointillism'\n");
+          myfile << "void draw() {\n";
+          myfile << "    noStroke();\n";
+          myfile << "    colorMode(HSB, 360, 1, 1);\n";
+          myfile << "    int tileResolution = " << tileCounter << ";\n";
+          myfile << "    int stepsW = " << stepsW << ";\n";
+          myfile << "    int stepsH = " << stepsH << ";\n";
+          myfile << "    // Initialize place holders\n";
+          myfile << "    float[] hue = hBackgroundTile(tileResolution);\n";
+          myfile << "    float[] saturation = sBackgroundTile(tileResolution);\n";
+          myfile << "    float[] luminance = lBackgroundTile(tileResolution);\n";
+          myfile << "    int[] coord = coordBackgroundTile(tileResolution);\n";
+          myfile << "    float diameter;\n";
+          myfile << "    if(coord[0] > coord[1]){\n";
+          myfile << "        diameter = coord[1] * 2;\n";
+          myfile << "    } else {\n";
+          myfile << "        diameter = coord[0] * 2;\n";
+          myfile << "    }\n";
+          printf("Making print statements\n");
+          myfile << "    // Iterates through each tile\n";
+          myfile << "    for(int i = 0; i <= stepsH; i++){\n";
+          myfile << "        for(int j = 0; j <= stepsW; j++){\n";
+          myfile << "            beginShape();\n";
+          myfile << "            // color of circle\n";
+          myfile << "            fill(hue[i*(stepsW+1) + j], saturation[i*(stepsW+1) + j], luminance[i*(stepsW+1) + j]);\n";
+          myfile << "            // draw circle\n";
+          myfile << "            circle(coord[0]*j, coord[1]*i, diameter);\n";
+          myfile << "            endShape();\n";
+          myfile << "        }\n";
+          myfile << "    }\n";
+          myfile << "    save(\"output6.png\");\n";
           myfile << "}\n\n";
           break;
   }
